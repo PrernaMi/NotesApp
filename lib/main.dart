@@ -22,8 +22,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    context.read<ThemeProvider>().getInitialTheme();
     super.initState();
+    context.read<ThemeProvider>().getInitialTheme();
   }
   @override
   Widget build(BuildContext context) {
