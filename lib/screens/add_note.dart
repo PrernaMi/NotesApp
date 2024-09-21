@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app_res/database/local/db_helper.dart';
+import 'package:notes_app_res/models/note_model.dart';
+import 'package:notes_app_res/provider/note_provider.dart';
 import 'package:notes_app_res/screens/home_page.dart';
+import 'package:provider/provider.dart';
 
 class AddNote extends StatelessWidget {
   MediaQueryData? mqData;
@@ -34,7 +38,18 @@ class AddNote extends StatelessWidget {
         actions: [
           InkWell(
             //Save your Note here
-            onTap: () {},
+            onTap: () async {
+              var db = DbHelper.getInstances;
+              int uid = await db.getUid();
+              context.read<NotesProvider>().addNoteProvider(
+                  newNote: NoteModel(
+                      uid: uid,
+                      title: titleController.text.toString(),
+                      desc: descController.text.toString()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                return HomePage();
+              }));
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
               height: 40,

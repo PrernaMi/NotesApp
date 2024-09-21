@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app_res/database/local/db_helper.dart';
+import 'package:notes_app_res/provider/note_provider.dart';
 import 'package:notes_app_res/provider/theme_provider.dart';
-import 'package:notes_app_res/screens/home_page.dart';
-import 'package:notes_app_res/screens/note_expanded.dart';
+import 'package:notes_app_res/start_screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) {
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context){
       return ThemeProvider();
-    },
-    child: MyApp(),
-  ));
+    }),
+    ChangeNotifierProvider(create: (context){
+      return NotesProvider(mainDb: DbHelper.getInstances);
+    })
+  ],child: MyApp(),));
 }
 
 class MyApp extends StatefulWidget {
@@ -35,7 +38,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: context.watch<ThemeProvider>().getTheme()
           ? ThemeMode.dark
           : ThemeMode.light,
-      home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }
